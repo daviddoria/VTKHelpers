@@ -19,8 +19,12 @@
 #ifndef VTKHelpers_H
 #define VTKHelpers_H
 
+// VTK
 class vtkImageData;
 class vtkPolyData;
+
+// STL
+#include <string>
 
 namespace VTKHelpers
 {
