@@ -309,4 +309,10 @@ void MaskImage(vtkImageData* const VTKImage, vtkImageData* const VTKSegmentMask,
     }
 }
 
+void SetImageSize(vtkImageData* input, vtkImageData* output)
+{
+  int* dims = input->GetDimensions();
+  output->SetDimensions(dims);
+}
+
 } // end namespace
