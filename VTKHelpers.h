@@ -19,14 +19,25 @@
 #ifndef VTKHelpers_H
 #define VTKHelpers_H
 
+// VTK
 class vtkImageData;
 class vtkPolyData;
+
+// STL
+#include <string>
 
 namespace VTKHelpers
 {
 
 extern unsigned char TRANSPARENT;
 extern unsigned char OPAQUE;
+
+
+/** Write a vtkPolyData to a .vtp file. */
+void WritePolyData(vtkPolyData* const polyData, const std::string& fileName);
+
+/** Write a vtkImageData to a .vti file. */
+void WriteImageData(vtkImageData* const imageData, const std::string& fileName);
 
 void InitializeStaticVariables();
 
