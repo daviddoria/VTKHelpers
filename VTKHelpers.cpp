@@ -263,4 +263,50 @@ void ScaleImage(vtkImageData* const image)
   image->DeepCopy(shiftScaleFilter->GetOutput());
 }
 
+
+void MaskImage(vtkImageData* const VTKImage, vtkImageData* const VTKSegmentMask, vtkImageData* const VTKMaskedImage)
+{
+  int* dims = VTKImage->GetDimensions();
+
+  VTKMaskedImage->SetDimensions(dims);
+  //VTKMaskedImage->SetNumberOfScalarComponents(4);
+  //VTKMaskedImage->SetScalarTypeToUnsignedChar();
+  VTKMaskedImage->AllocateScalars(VTK_UNSIGNED_CHAR, 4);
+
+  // int dims[3]; // can't do this
+  for (int y = 0; y < dims[1]; y++)
+    {
+    for (int x = 0; x < dims[0]; x++)
+      {
+
+      unsigned char* imagePixel = static_cast<unsigned char*>(VTKImage->GetScalarPointer(x,y,0));
+      unsigned char* maskPixel = static_cast<unsigned char*>(VTKSegmentMask->GetScalarPointer(x,y,0));
+      unsigned char* outputPixel = static_cast<unsigned char*>(VTKMaskedImage->GetScalarPointer(x,y,0));
+
+      outputPixel[0] = imagePixel[0];
+
+      if(VTKImage->GetNumberOfScalarComponents() == 3)
+        {
+        outputPixel[1] = imagePixel[1];
+        outputPixel[2] = imagePixel[2];
+        }
+      else // Grayscale should have all components equal to the first component
+        {
+        outputPixel[1] = imagePixel[0];
+        outputPixel[2] = imagePixel[0];
+        }
+
+      if(maskPixel[0] == 0)
+        {
+        outputPixel[3] = 0;
+        }
+      else
+        {
+        outputPixel[3] = 255;
+        }
+
+      }
+    }
+}
+
 } // end namespace

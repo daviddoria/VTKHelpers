@@ -58,6 +58,8 @@ void OutputAllArrayNames(vtkPolyData* const polyData);
 
 void ScaleImage(vtkImageData* const image);
 
+void MaskImage(vtkImageData* const VTKImage, vtkImageData* const VTKSegmentMask, vtkImageData* const VTKMaskedImage);
+
 } // end namespace
 
 #endif
