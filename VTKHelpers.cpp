@@ -29,6 +29,7 @@
 #include <vtkImageData.h>
 #include <vtkImageMagnitude.h>
 #include <vtkImageShiftScale.h>
+#include <vtkMath.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
 #include <vtkSmartPointer.h>
@@ -313,6 +314,42 @@ void SetImageSize(vtkImageData* input, vtkImageData* output)
 {
   int* dims = input->GetDimensions();
   output->SetDimensions(dims);
+}
+
+void WritePolyData(vtkPolyData* const polydata, const std::string& filename)
+{
+  vtkSmartPointer<vtkXMLPolyDataWriter> writer =
+    vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+  writer->SetFileName(filename.c_str());
+  writer->SetInputData(polydata);
+  writer->Write();
+}
+
+
+unsigned int NumberOfUniquePoints(vtkPoints* const points, const float tolerance)
+{
+  if(points->GetNumberOfPoints() <= 1)
+  {
+    return points->GetNumberOfPoints();
+  }
+
+  double currentPoint[3];
+  points->GetPoint(0, currentPoint);
+  unsigned int numberOfUniquePoints = 1;
+
+  double p[3];
+
+  for(vtkIdType i = 1; i < points->GetNumberOfPoints(); ++i)
+    {
+    points->GetPoint(i,p);
+    double distance = sqrt(vtkMath::Distance2BetweenPoints(currentPoint, p));
+    if(distance > tolerance)
+      {
+      points->GetPoint(i,currentPoint);
+      numberOfUniquePoints++;
+      }
+    }
+  return numberOfUniquePoints;
 }
 
 } // end namespace

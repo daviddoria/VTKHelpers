@@ -21,6 +21,7 @@
 
 // VTK
 class vtkImageData;
+class vtkPoints;
 class vtkPolyData;
 
 // STL
@@ -31,6 +32,9 @@ namespace VTKHelpers
 
 extern unsigned char TRANSPARENT;
 extern unsigned char OPAQUE;
+
+/** Compute how many unique points there are in a vtkPoints object. This is a special case where the points are all along a line in order. */
+unsigned int NumberOfUniquePoints(vtkPoints* const points, const float tolerance);
 
 void SetImageSize(vtkImageData* input, vtkImageData* output);
 
