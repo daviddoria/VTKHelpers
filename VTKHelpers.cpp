@@ -352,4 +352,25 @@ unsigned int NumberOfUniquePoints(vtkPoints* const points, const float tolerance
   return numberOfUniquePoints;
 }
 
+void PathFromPoints(vtkPoints* const points, vtkPolyData* const path)
+{
+  vtkSmartPointer<vtkPolyLine> polyLine = vtkSmartPointer<vtkPolyLine>::New();
+  
+  polyLine->GetPointIds()->SetNumberOfIds(points->GetNumberOfPoints());
+  for(vtkIdType pointId = 0; pointId < points->GetNumberOfPoints(); ++pointId)
+    {
+    polyLine->GetPointIds()->SetId(pointId, pointId);
+    }
+
+  // Create a cell array to store the lines in and add the lines to it
+  vtkSmartPointer<vtkCellArray> cells = vtkSmartPointer<vtkCellArray>::New();
+  cells->InsertNextCell(polyLine);
+
+  // Add the points to the dataset
+  path->SetPoints(points);
+
+  // Add the lines to the dataset
+  path->SetLines(cells);
+}
+
 } // end namespace

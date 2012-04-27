@@ -38,6 +38,8 @@ unsigned int NumberOfUniquePoints(vtkPoints* const points, const float tolerance
 
 void SetImageSize(vtkImageData* input, vtkImageData* output);
 
+void PathFromPoints(vtkPoints* const points, vtkPolyData* const path);
+
 /** Write a vtkPolyData to a .vtp file. */
 void WritePolyData(vtkPolyData* const polyData, const std::string& fileName);
 
