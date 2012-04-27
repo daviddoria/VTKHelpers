@@ -24,6 +24,7 @@
 
 // VTK
 #include <vtkCell.h>
+#include <vtkCellArray.h>
 #include <vtkDoubleArray.h>
 #include <vtkFloatArray.h>
 #include <vtkImageData.h>
@@ -32,6 +33,7 @@
 #include <vtkMath.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
+#include <vtkPolyLine.h>
 #include <vtkSmartPointer.h>
 #include <vtkThresholdPoints.h>
 #include <vtkXMLImageDataWriter.h>
