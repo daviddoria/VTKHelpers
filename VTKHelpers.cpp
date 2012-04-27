@@ -121,6 +121,28 @@ void BlankAndOutlineImage(vtkImageData* const image, const unsigned char color[3
   image->Modified();
 }
 
+void OutlineImage(vtkImageData* const image, const unsigned char color[3])
+{
+  int dims[3];
+  image->GetDimensions(dims);
+
+  for(int i = 0; i < dims[0]; ++i)
+    {
+    for(int j = 0; j < dims[1]; ++j)
+      {
+      unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(i,j,0));
+      if(i == 0 || i == dims[0] - 1 || j == 0 || j == dims[1] - 1)
+        {
+        pixel[0] = color[0];
+        pixel[1] = color[1];
+        pixel[2] = color[2];
+        pixel[3] = OPAQUE;
+        }
+      }
+    }
+  image->Modified();
+}
+
 void KeepNonZeroVectors(vtkImageData* const image, vtkPolyData* output)
 {
   vtkSmartPointer<vtkImageMagnitude> magnitudeFilter = vtkSmartPointer<vtkImageMagnitude>::New();

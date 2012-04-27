@@ -56,6 +56,9 @@ void SetImageCenterPixel(vtkImageData* const image, const unsigned char color[3]
 // Set an image to black except for its border, which is set to 'color'.
 void BlankAndOutlineImage(vtkImageData* const image, const unsigned char color[3]);
 
+// Set an image to black except for its border, which is set to 'color'.
+void OutlineImage(vtkImageData* const image, const unsigned char color[3]);
+
 // Set an image to black.
 void ZeroImage(vtkImageData* const image, const unsigned int channels);
 
