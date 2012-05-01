@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
+project(VTKHelpers)
+
 add_library(libVTKHelpers VTKHelpers.cpp)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})

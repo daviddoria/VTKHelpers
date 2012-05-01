@@ -24,13 +24,16 @@
 
 // VTK
 #include <vtkCell.h>
+#include <vtkCellArray.h>
 #include <vtkDoubleArray.h>
 #include <vtkFloatArray.h>
 #include <vtkImageData.h>
 #include <vtkImageMagnitude.h>
 #include <vtkImageShiftScale.h>
+#include <vtkMath.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
+#include <vtkPolyLine.h>
 #include <vtkSmartPointer.h>
 #include <vtkThresholdPoints.h>
 #include <vtkXMLImageDataWriter.h>
@@ -112,6 +115,28 @@ void BlankAndOutlineImage(vtkImageData* const image, const unsigned char color[3
         pixel[1] = 0;
         pixel[2] = 0;
         pixel[3] = TRANSPARENT;
+        }
+      }
+    }
+  image->Modified();
+}
+
+void OutlineImage(vtkImageData* const image, const unsigned char color[3])
+{
+  int dims[3];
+  image->GetDimensions(dims);
+
+  for(int i = 0; i < dims[0]; ++i)
+    {
+    for(int j = 0; j < dims[1]; ++j)
+      {
+      unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(i,j,0));
+      if(i == 0 || i == dims[0] - 1 || j == 0 || j == dims[1] - 1)
+        {
+        pixel[0] = color[0];
+        pixel[1] = color[1];
+        pixel[2] = color[2];
+        pixel[3] = OPAQUE;
         }
       }
     }
@@ -313,6 +338,63 @@ void SetImageSizeToMatch(vtkImageData* const input, vtkImageData* const output)
 {
   int* dims = input->GetDimensions();
   output->SetDimensions(dims);
+}
+
+void WritePolyData(vtkPolyData* const polydata, const std::string& filename)
+{
+  vtkSmartPointer<vtkXMLPolyDataWriter> writer =
+    vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+  writer->SetFileName(filename.c_str());
+  writer->SetInputData(polydata);
+  writer->Write();
+}
+
+
+unsigned int NumberOfUniquePoints(vtkPoints* const points, const float tolerance)
+{
+  if(points->GetNumberOfPoints() <= 1)
+  {
+    return points->GetNumberOfPoints();
+  }
+
+  double currentPoint[3];
+  points->GetPoint(0, currentPoint);
+  unsigned int numberOfUniquePoints = 1;
+
+  double p[3];
+
+  for(vtkIdType i = 1; i < points->GetNumberOfPoints(); ++i)
+    {
+    points->GetPoint(i,p);
+    double distance = sqrt(vtkMath::Distance2BetweenPoints(currentPoint, p));
+    if(distance > tolerance)
+      {
+      points->GetPoint(i,currentPoint);
+      numberOfUniquePoints++;
+      }
+    }
+  return numberOfUniquePoints;
+}
+
+void PathFromPoints(vtkPoints* const points, vtkPolyData* const path)
+{
+  vtkSmartPointer<vtkPolyLine> polyLine = vtkSmartPointer<vtkPolyLine>::New();
+  
+  polyLine->GetPointIds()->SetNumberOfIds(points->GetNumberOfPoints());
+  for(vtkIdType pointId = 0; pointId < points->GetNumberOfPoints(); ++pointId)
+    {
+    polyLine->GetPointIds()->SetId(pointId, pointId);
+    }
+
+  // Create a cell array to store the lines in and add the lines to it
+  vtkSmartPointer<vtkCellArray> cells = vtkSmartPointer<vtkCellArray>::New();
+  cells->InsertNextCell(polyLine);
+
+  // Add the points to the dataset
+  path->SetPoints(points);
+
+  // Add the lines to the dataset
+  path->SetLines(cells);
 }
 
 } // end namespace
