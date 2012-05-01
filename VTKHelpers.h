@@ -32,7 +32,7 @@ namespace VTKHelpers
 extern unsigned char TRANSPARENT;
 extern unsigned char OPAQUE;
 
-void SetImageSize(vtkImageData* input, vtkImageData* output);
+void SetImageSizeToMatch(vtkImageData* const input, vtkImageData* const output);
 
 /** Write a vtkPolyData to a .vtp file. */
 void WritePolyData(vtkPolyData* const polyData, const std::string& fileName);

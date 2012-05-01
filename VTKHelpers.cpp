@@ -309,7 +309,7 @@ void MaskImage(vtkImageData* const VTKImage, vtkImageData* const VTKSegmentMask,
     }
 }
 
-void SetImageSize(vtkImageData* input, vtkImageData* output)
+void SetImageSizeToMatch(vtkImageData* const input, vtkImageData* const output)
 {
   int* dims = input->GetDimensions();
   output->SetDimensions(dims);
