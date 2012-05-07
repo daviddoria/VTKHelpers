@@ -33,10 +33,14 @@ namespace VTKHelpers
 extern unsigned char TRANSPARENT;
 extern unsigned char OPAQUE;
 
+void SetImageSizeToMatch(vtkImageData* const input, vtkImageData* const output);
+
 /** Compute how many unique points there are in a vtkPoints object. This is a special case where the points are all along a line in order. */
 unsigned int NumberOfUniquePoints(vtkPoints* const points, const float tolerance);
 
 void SetImageSize(vtkImageData* input, vtkImageData* output);
+
+void PathFromPoints(vtkPoints* const points, vtkPolyData* const path);
 
 /** Write a vtkPolyData to a .vtp file. */
 void WritePolyData(vtkPolyData* const polyData, const std::string& fileName);
@@ -53,6 +57,9 @@ void SetImageCenterPixel(vtkImageData* const image, const unsigned char color[3]
 
 // Set an image to black except for its border, which is set to 'color'.
 void BlankAndOutlineImage(vtkImageData* const image, const unsigned char color[3]);
+
+// Set an image to black except for its border, which is set to 'color'.
+void OutlineImage(vtkImageData* const image, const unsigned char color[3]);
 
 // Set an image to black.
 void ZeroImage(vtkImageData* const image, const unsigned int channels);
