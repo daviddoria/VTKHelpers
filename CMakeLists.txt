@@ -11,8 +11,8 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++0x")
 FIND_PACKAGE(VTK REQUIRED)
 INCLUDE(${VTK_USE_FILE})
 
-add_library(libVTKHelpers VTKHelpers.cpp)
-target_link_libraries(libVTKHelpers ${VTK_LIBRARIES})
+add_library(VTKHelpers VTKHelpers.cpp)
+target_link_libraries(VTKHelpers ${VTK_LIBRARIES})
 
 if(BuildTests)
   add_subdirectory(Tests)
