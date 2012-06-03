@@ -30,7 +30,7 @@ class vtkPolyData;
 namespace VTKHelpers
 {
 
-enum PixelValuesEnum {TRANSPARENT = 0, OPAQUE = 255};
+enum PixelValuesEnum {TRANSPARENT_PIXEL = 0, OPAQUE_PIXEL = 255};
 
 void SetImageSizeToMatch(vtkImageData* const input, vtkImageData* const output);
 
