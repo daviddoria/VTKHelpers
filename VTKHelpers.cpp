@@ -51,7 +51,6 @@ void GetCellCenter(vtkImageData* const imageData, const unsigned int cellId, dou
   cell->EvaluateLocation(subId, pcoords, center, weights.get());
 }
 
-
 void SetImageCenterPixel(vtkImageData* const image, const unsigned char color[3])
 {
   int dims[3];
@@ -62,7 +61,7 @@ void SetImageCenterPixel(vtkImageData* const image, const unsigned char color[3]
   pixel[0] = color[0];
   pixel[1] = color[1];
   pixel[2] = color[2];
-  pixel[3] = 255; // visible
+  pixel[3] = OPAQUE_PIXEL; // visible
 }
 
 void ZeroImage(vtkImageData* const image, const unsigned int channels)
@@ -258,7 +257,7 @@ void OutputAllArrayNames(vtkPolyData* const polyData)
 void ScaleImage(vtkImageData* const image)
 {
   double valuesRange[2];
-  
+
 //   vtkDoubleArray* values = vtkDoubleArray::SafeDownCast(image->GetPointData()->GetArray("ImageScalars"));
 //   if(values)
 //   {
@@ -271,9 +270,9 @@ void ScaleImage(vtkImageData* const image)
 
   valuesRange[0] = image->GetScalarRange()[0];
   valuesRange[1] = image->GetScalarRange()[1];
-  
+
   std::cout << "valuesRange = " << valuesRange[0] << " " << valuesRange[1] << std::endl;
- 
+
   vtkSmartPointer<vtkImageShiftScale> shiftScaleFilter =
     vtkSmartPointer<vtkImageShiftScale>::New();
   shiftScaleFilter->SetOutputScalarTypeToUnsignedChar();
@@ -320,11 +319,11 @@ void MaskImage(vtkImageData* const VTKImage, vtkImageData* const VTKSegmentMask,
 
       if(maskPixel[0] == 0)
         {
-        outputPixel[3] = 0;
+        outputPixel[3] = TRANSPARENT_PIXEL;
         }
       else
         {
-        outputPixel[3] = 255;
+        outputPixel[3] = OPAQUE_PIXEL;
         }
 
       }
@@ -376,7 +375,7 @@ unsigned int NumberOfUniquePoints(vtkPoints* const points, const float tolerance
 void PathFromPoints(vtkPoints* const points, vtkPolyData* const path)
 {
   vtkSmartPointer<vtkPolyLine> polyLine = vtkSmartPointer<vtkPolyLine>::New();
-  
+
   polyLine->GetPointIds()->SetNumberOfIds(points->GetNumberOfPoints());
   for(vtkIdType pointId = 0; pointId < points->GetNumberOfPoints(); ++pointId)
     {

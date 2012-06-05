@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 2.8)
 
 project(VTKHelpers)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+if(UNIX)
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
+endif(UNIX)
 
 FIND_PACKAGE(VTK REQUIRED)
 INCLUDE(${VTK_USE_FILE})
