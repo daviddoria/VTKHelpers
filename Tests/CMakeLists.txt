@@ -1,2 +1,2 @@
-add_executable(Tests Tests.cpp)
-target_link_libraries(Tests libVTKHelpers)
+add_executable(TestVTKHelpers TestVTKHelpers.cpp)
+target_link_libraries(TestVTKHelpers VTKHelpers)

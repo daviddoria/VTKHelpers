@@ -42,9 +42,6 @@
 namespace VTKHelpers
 {
 
-unsigned char TRANSPARENT = 0;
-unsigned char OPAQUE = 255;
-
 void GetCellCenter(vtkImageData* const imageData, const unsigned int cellId, double center[3])
 {
   double pcoords[3] = {0,0,0};
@@ -107,14 +104,14 @@ void BlankAndOutlineImage(vtkImageData* const image, const unsigned char color[3
         pixel[0] = color[0];
         pixel[1] = color[1];
         pixel[2] = color[2];
-        pixel[3] = OPAQUE;
+        pixel[3] = OPAQUE_PIXEL;
         }
       else
         {
         pixel[0] = 0;
         pixel[1] = 0;
         pixel[2] = 0;
-        pixel[3] = TRANSPARENT;
+        pixel[3] = TRANSPARENT_PIXEL;
         }
       }
     }
@@ -136,7 +133,7 @@ void OutlineImage(vtkImageData* const image, const unsigned char color[3])
         pixel[0] = color[0];
         pixel[1] = color[1];
         pixel[2] = color[2];
-        pixel[3] = OPAQUE;
+        pixel[3] = OPAQUE_PIXEL;
         }
       }
     }
@@ -182,7 +179,7 @@ void MakeImageTransparent(vtkImageData* const image)
     for(int j = 0; j < dims[1]; ++j)
       {
       unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(i,j,0));
-      pixel[3] = TRANSPARENT;
+      pixel[3] = TRANSPARENT_PIXEL;
       }
     }
   image->Modified();
@@ -239,11 +236,11 @@ void MakeValueTransparent(vtkImageData* const image, const unsigned char value[3
 
       if(setTransparent)
         {
-        pixel[3] = TRANSPARENT;
+        pixel[3] = TRANSPARENT_PIXEL;
         }
       else
         {
-        pixel[3] = OPAQUE;
+        pixel[3] = OPAQUE_PIXEL;
         }
       } // end for j
     } // end for i
