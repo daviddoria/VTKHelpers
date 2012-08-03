@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(VTKHelpers)
+SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # For the use of shared_ptr
 if(UNIX)
@@ -17,4 +18,3 @@ SET(VTKHelpers_BuildTests ON CACHE BOOL "VTKHelpers_BuildTests" FORCE)
 if(VTKHelpers_BuildTests)
   add_subdirectory(Tests)
 endif(VTKHelpers_BuildTests)
-
