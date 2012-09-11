@@ -13,7 +13,7 @@ INCLUDE(${VTK_USE_FILE})
 add_library(VTKHelpers VTKHelpers.cpp)
 target_link_libraries(VTKHelpers ${VTK_LIBRARIES})
 
-SET(VTKHelpers_BuildTests ON CACHE BOOL "VTKHelpers_BuildTests" FORCE)
+SET(VTKHelpers_BuildTests ON CACHE BOOL "VTKHelpers_BuildTests")
 if(VTKHelpers_BuildTests)
   add_subdirectory(Tests)
 endif(VTKHelpers_BuildTests)
