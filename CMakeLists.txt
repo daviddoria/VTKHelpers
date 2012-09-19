@@ -13,14 +13,13 @@ INCLUDE(${VTK_USE_FILE})
 
 add_library(VTKHelpers VTKHelpers.cpp)
 target_link_libraries(VTKHelpers ${VTK_LIBRARIES})
+set(VTKHelpers_libraries ${VTKHelpers_libraries} ${VTK_LIBRARIES})
 
 SET(VTKHelpers_BuildTests ON CACHE BOOL "VTKHelpers_BuildTests")
 
-set_property(GLOBAL PROPERTY VTKHelpersDir ${CMAKE_CURRENT_SOURCE_DIR})
-set_property(GLOBAL PROPERTY VTKHelpersLibs VTKHelpers)
+set_property(GLOBAL PROPERTY VTKHelpersIncludeDirs ${CMAKE_CURRENT_SOURCE_DIR}) # There are no subdirectories to include here
+set_property(GLOBAL PROPERTY VTKHelpersLibs ${VTKHelpers_libraries})
 
 if(VTKHelpers_BuildTests)
   add_subdirectory(Tests)
 endif(VTKHelpers_BuildTests)
-
-
