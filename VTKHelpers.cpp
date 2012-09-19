@@ -42,9 +42,6 @@
 namespace VTKHelpers
 {
 
-unsigned char TRANSPARENT = 0;
-unsigned char OPAQUE = 255;
-
 void GetCellCenter(vtkImageData* const imageData, const unsigned int cellId, double center[3])
 {
   double pcoords[3] = {0,0,0};
@@ -53,7 +50,6 @@ void GetCellCenter(vtkImageData* const imageData, const unsigned int cellId, dou
   int subId = cell->GetParametricCenter(pcoords);
   cell->EvaluateLocation(subId, pcoords, center, weights.get());
 }
-
 
 void SetImageCenterPixel(vtkImageData* const image, const unsigned char color[3])
 {
@@ -65,7 +61,7 @@ void SetImageCenterPixel(vtkImageData* const image, const unsigned char color[3]
   pixel[0] = color[0];
   pixel[1] = color[1];
   pixel[2] = color[2];
-  pixel[3] = 255; // visible
+  pixel[3] = OPAQUE_PIXEL; // visible
 }
 
 void ZeroImage(vtkImageData* const image, const unsigned int channels)
@@ -107,14 +103,14 @@ void BlankAndOutlineImage(vtkImageData* const image, const unsigned char color[3
         pixel[0] = color[0];
         pixel[1] = color[1];
         pixel[2] = color[2];
-        pixel[3] = OPAQUE;
+        pixel[3] = OPAQUE_PIXEL;
         }
       else
         {
         pixel[0] = 0;
         pixel[1] = 0;
         pixel[2] = 0;
-        pixel[3] = TRANSPARENT;
+        pixel[3] = TRANSPARENT_PIXEL;
         }
       }
     }
@@ -136,7 +132,7 @@ void OutlineImage(vtkImageData* const image, const unsigned char color[3])
         pixel[0] = color[0];
         pixel[1] = color[1];
         pixel[2] = color[2];
-        pixel[3] = OPAQUE;
+        pixel[3] = OPAQUE_PIXEL;
         }
       }
     }
@@ -182,7 +178,7 @@ void MakeImageTransparent(vtkImageData* const image)
     for(int j = 0; j < dims[1]; ++j)
       {
       unsigned char* pixel = static_cast<unsigned char*>(image->GetScalarPointer(i,j,0));
-      pixel[3] = TRANSPARENT;
+      pixel[3] = TRANSPARENT_PIXEL;
       }
     }
   image->Modified();
@@ -239,11 +235,11 @@ void MakeValueTransparent(vtkImageData* const image, const unsigned char value[3
 
       if(setTransparent)
         {
-        pixel[3] = TRANSPARENT;
+        pixel[3] = TRANSPARENT_PIXEL;
         }
       else
         {
-        pixel[3] = OPAQUE;
+        pixel[3] = OPAQUE_PIXEL;
         }
       } // end for j
     } // end for i
@@ -261,7 +257,7 @@ void OutputAllArrayNames(vtkPolyData* const polyData)
 void ScaleImage(vtkImageData* const image)
 {
   double valuesRange[2];
-  
+
 //   vtkDoubleArray* values = vtkDoubleArray::SafeDownCast(image->GetPointData()->GetArray("ImageScalars"));
 //   if(values)
 //   {
@@ -274,9 +270,9 @@ void ScaleImage(vtkImageData* const image)
 
   valuesRange[0] = image->GetScalarRange()[0];
   valuesRange[1] = image->GetScalarRange()[1];
-  
+
   std::cout << "valuesRange = " << valuesRange[0] << " " << valuesRange[1] << std::endl;
- 
+
   vtkSmartPointer<vtkImageShiftScale> shiftScaleFilter =
     vtkSmartPointer<vtkImageShiftScale>::New();
   shiftScaleFilter->SetOutputScalarTypeToUnsignedChar();
@@ -323,11 +319,11 @@ void MaskImage(vtkImageData* const VTKImage, vtkImageData* const VTKSegmentMask,
 
       if(maskPixel[0] == 0)
         {
-        outputPixel[3] = 0;
+        outputPixel[3] = TRANSPARENT_PIXEL;
         }
       else
         {
-        outputPixel[3] = 255;
+        outputPixel[3] = OPAQUE_PIXEL;
         }
 
       }
@@ -379,7 +375,7 @@ unsigned int NumberOfUniquePoints(vtkPoints* const points, const float tolerance
 void PathFromPoints(vtkPoints* const points, vtkPolyData* const path)
 {
   vtkSmartPointer<vtkPolyLine> polyLine = vtkSmartPointer<vtkPolyLine>::New();
-  
+
   polyLine->GetPointIds()->SetNumberOfIds(points->GetNumberOfPoints());
   for(vtkIdType pointId = 0; pointId < points->GetNumberOfPoints(); ++pointId)
     {
