@@ -18,6 +18,7 @@ SET(VTKHelpers_BuildTests ON CACHE BOOL "VTKHelpers_BuildTests")
 
 # Allow inheritance of include directories
 if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+  message("Exported variables from VTKHelpers so it can be used as a submodule.")
   set(VTKHelpers_includes ${VTKHelpers_includes} ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
   set(VTKHelpers_libraries ${VTKHelpers_libraries} VTKHelpers PARENT_SCOPE)
 endif()
