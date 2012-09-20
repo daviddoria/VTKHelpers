@@ -19,7 +19,7 @@ include_directories(${VTKHelpers_include_dirs})
 # Create the library
 add_library(VTKHelpers VTKHelpers.cpp)
 target_link_libraries(VTKHelpers ${VTK_LIBRARIES})
-set(VTKHelpers_libraries ${VTKHelpers_libraries} ${VTKHelpers_libraries})
+set(VTKHelpers_libraries ${VTKHelpers_libraries} VTKHelpers) # Add the library to the list of libraries used
 
 # Add a CMake variable so the user can choose to build the tests
 SET(VTKHelpers_BuildTests ON CACHE BOOL "VTKHelpers_BuildTests")
