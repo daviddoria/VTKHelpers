@@ -22,7 +22,7 @@ target_link_libraries(VTKHelpers ${VTK_LIBRARIES})
 set(VTKHelpers_libraries ${VTKHelpers_libraries} VTKHelpers) # Add the library to the list of libraries used
 
 # Add a CMake variable so the user can choose to build the tests
-SET(VTKHelpers_BuildTests ON CACHE BOOL "VTKHelpers_BuildTests")
+option(VTKHelpers_BuildTests "VTKHelpers_BuildTests")
 
 # Allow this project to be detected and used as a submodule
 set(VTKHelpers_include_dirs ${VTKHelpers_include_dirs} ${CMAKE_CURRENT_SOURCE_DIR})
