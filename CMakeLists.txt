@@ -5,7 +5,7 @@ SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # For the use of shared_ptr
 if(UNIX)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 endif(UNIX)
 
 FIND_PACKAGE(VTK REQUIRED)
@@ -14,7 +14,8 @@ INCLUDE(${VTK_USE_FILE})
 add_library(VTKHelpers VTKHelpers.cpp)
 target_link_libraries(VTKHelpers ${VTK_LIBRARIES})
 
-SET(VTKHelpers_BuildTests ON CACHE BOOL "VTKHelpers_BuildTests")
+# Add a CMake variable so the user can choose to build the tests
+option(VTKHelpers_BuildTests "VTKHelpers_BuildTests")
 
 # Allow inheritance of include directories
 if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
