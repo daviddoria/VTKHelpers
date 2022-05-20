@@ -278,7 +278,7 @@ void ScaleImage(vtkImageData* const image)
   shiftScaleFilter->SetOutputScalarTypeToUnsignedChar();
   shiftScaleFilter->SetInputData(image);
   shiftScaleFilter->SetShift(-1.0 * valuesRange[0]);
-  shiftScaleFilter->SetScale(255.0f * (valuesRange[1] - valuesRange[0]));
+  shiftScaleFilter->SetScale(255.0f / (valuesRange[1] - valuesRange[0]));
   shiftScaleFilter->Update();
 
   image->DeepCopy(shiftScaleFilter->GetOutput());
